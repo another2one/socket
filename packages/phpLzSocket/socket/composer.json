@@ -1,0 +1,12 @@
+{
+    "name": "lizhi/phplzsocket",
+    "description": "lizhi test",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "lizhi",
+            "email": "1458705589@qq.com"
+        }
+    ],
+    "require": {}
+}
