@@ -44,7 +44,7 @@
         public $config;
         public $timeout = 60;
         public $listenNum = 10000;
-        public $maxconns = 10;
+        public $maxconns = 1000;
         public $message;
         public $count = 0;
 
@@ -165,13 +165,13 @@
         public function select()
         {
             socket_set_nonblock($socket); // 非阻塞
-            
+            $this->connections[] = $this->socket;
             // for($jj = 0; $jj < 10; $jj++)
             while(true)
             {
                 try{
-                    $readfds = $writefds = [];
-                    $readfds[] = $this->connections;
+                    $writefds = [];
+                    $readfds = $this->connections;
                     // socket_select 阻塞 
                     if(socket_select($readfds, $writefds, $e, $this->timeout))
                     {
@@ -191,7 +191,7 @@
                             unset($writefds[$i]);
                         }
 
-                        var_dump($this->readfds);
+                        var_dump($readfds);
                         continue;
 
                         // 轮循读通道
