@@ -10,7 +10,7 @@
         /**
          * write
          */
-        public function write();
+        public function write($message);
 
         /**
          * read
