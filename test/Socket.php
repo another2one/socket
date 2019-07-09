@@ -170,10 +170,10 @@
             while(true)
             {
                 try{
-                    $readfds = array_merge($this->connections, [$this->socket]);
-                    $writefds = [];
+                    $readfds = $writefds = [];
+                    $readfds[] = $this->connections;
                     // socket_select 阻塞 
-                    if(@socket_select($readfds, $writefds, $e, $this->timeout))
+                    if(socket_select($readfds, $writefds, $e, $this->timeout))
                     {
                         // 接受请求 如果没超过上限就加入活动的socket中
                         $newConnection = socket_accept($this->socket);
@@ -190,6 +190,9 @@
                             socket_write($writefds[$i], $message, strlen($message));
                             unset($writefds[$i]);
                         }
+
+                        var_dump($this->readfds);
+                        continue;
 
                         // 轮循读通道
                         foreach ($readfds as $rfd) {
