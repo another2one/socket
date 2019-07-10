@@ -39,5 +39,5 @@
            ->write($argv[1]??'123')
            ->read()
            ->close();
-
-    $socket->echoMessage();
+    
+    echo $socket->message;

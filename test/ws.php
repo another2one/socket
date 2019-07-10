@@ -2,10 +2,11 @@
 class WS {
     var $master;
     var $sockets = array();
-    var $debug = false;//true为调试模式，输出log日志
+    var $debug = true;//true为调试模式，输出log日志
     var $handshake = array();
 
     function __construct($address, $port){
+
         $this->master=socket_create(AF_INET, SOCK_STREAM, SOL_TCP)     or die("socket_create() failed");
         socket_set_option($this->master, SOL_SOCKET, SO_REUSEADDR, 1)  or die("socket_option() failed");
         socket_bind($this->master, $address, $port)                    or die("socket_bind() failed");
@@ -17,10 +18,12 @@ class WS {
         $this->say("Master socket  : ".$this->master."\n");
         
         while(true){
+
             $socketArr = $this->sockets;
             $write = NULL;
             $except = NULL;
             socket_select($socketArr, $write, $except, NULL);  //自动选择来消息的socket 如果是握手 自动选择主机
+            var_dump($socketArr);            
             foreach ($socketArr as $socket){
                 if ($socket == $this->master){  //主机
                     $client = socket_accept($this->master);
@@ -42,7 +45,7 @@ class WS {
                         }
                         else{
                             $buffer = $this->decode($buffer);
-                            echo $buffer.PHP_EOL;
+                            echo $buffer. '=== 66666 ======' . PHP_EOL;
                             $key = array_search($socket, $this->sockets);
                             $arr = $this->sockets;
                             array_shift($arr);
